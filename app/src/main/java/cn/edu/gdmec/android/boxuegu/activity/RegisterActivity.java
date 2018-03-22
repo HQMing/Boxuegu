@@ -3,8 +3,8 @@ package cn.edu.gdmec.android.boxuegu.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import cn.edu.gdmec.android.boxuegu.R;
+import cn.edu.gdmec.android.boxuegu.utils.MD5Utils;
 
 public class RegisterActivity extends AppCompatActivity {
     //标题
@@ -35,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        init();
     }
 
     private void init(){
@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }else{
                     Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-                    //saveRegisterInfo(userName,psw);
+                    saveRegisterInfo(userName,psw);
                     Intent data =new Intent();
                     data.putExtra("username",userName);
                     setResult(RESULT_OK,data);
@@ -98,6 +98,13 @@ public class RegisterActivity extends AppCompatActivity {
             has_userName=true;
         }
         return has_userName;
+    }
+    private void saveRegisterInfo(String userName,String psw){
+        String md5Psw= MD5Utils.md5(psw);
+        SharedPreferences sp = getSharedPreferences("loginInfo",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putString(userName,md5Psw);
+        editor.commit();
     }
 
 }
