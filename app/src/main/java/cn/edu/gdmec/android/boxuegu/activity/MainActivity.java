@@ -18,6 +18,7 @@ import cn.edu.gdmec.android.boxuegu.Fragment.CourseFragment;
 import cn.edu.gdmec.android.boxuegu.Fragment.ExercisesFragment;
 import cn.edu.gdmec.android.boxuegu.Fragment.MyinfoFragment;
 import cn.edu.gdmec.android.boxuegu.R;
+//修改界面
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
