@@ -16,7 +16,7 @@ import cn.edu.gdmec.android.boxuegu.utils.AnalysisUtils;
 import cn.edu.gdmec.android.boxuegu.utils.MD5Utils;
 
 public class ActivityFindPswActivity extends Activity implements View.OnClickListener {
-
+//
 
     private TextView tv_back;
     private TextView tv_main_title;
