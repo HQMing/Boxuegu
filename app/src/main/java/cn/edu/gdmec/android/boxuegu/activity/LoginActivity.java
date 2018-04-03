@@ -2,6 +2,7 @@ package cn.edu.gdmec.android.boxuegu.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -16,14 +17,21 @@ import cn.edu.gdmec.android.boxuegu.utils.MD5Utils;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView tv_main_title;
-    private TextView tv_back,tv_register,tv_find_psw;
+    private TextView tv_back;
+    private TextView tv_register;
+    private TextView tv_find_psw;
     private Button btn_login;
-    private String userName,psw,spPsw;
-    private EditText et_user_name,et_psw;
+    private EditText et_user_name;
+    private EditText et_psw;
+    private String userName;
+    private String psw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        init();
     }
     private void init(){
         tv_main_title = (TextView)findViewById(R.id.tv_main_title);
@@ -60,8 +68,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 userName=et_user_name.getText().toString().trim();
                 psw=et_psw.getText().toString().trim();
-                String md5Psw = MD5Utils.md5(psw);
-                spPsw=readPsw(userName);
+                String md5Psw = null;
+                md5Psw = MD5Utils.md5(psw);
+                String spPsw=readPsw(userName);
                 if (TextUtils.isEmpty(userName)){
                     Toast.makeText(LoginActivity.this,"请输入用户名",Toast.LENGTH_SHORT).show();;
                     return;
@@ -73,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     saveLoginStatus(true,userName);
                     Intent data=new Intent();
                     data.putExtra("isLogin",true);
+                    data.putExtra("userName",userName);
                     setResult(RESULT_OK,data);
                     LoginActivity.this.finish();
                     return;
@@ -85,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private String readPsw(String userName){
         SharedPreferences sp = getSharedPreferences("loginInfo",MODE_PRIVATE);
         return sp.getString(userName,"");

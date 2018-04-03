@@ -1,5 +1,6 @@
 package cn.edu.gdmec.android.boxuegu.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import cn.edu.gdmec.android.boxuegu.R;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
+    private TextView et_user_name;
     private RelativeLayout main_body;
     private TextView bottom_bar_text_course;
     private ImageView bottom_bar_image_course;
@@ -37,12 +39,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        et_user_name = findViewById(R.id.et_user_name);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivityForResult(intent, 2);
+        setSelectStatus(2);
+        FragmentManager manager=getSupportFragmentManager();
+        FragmentTransaction transaction=manager.beginTransaction();
+        transaction.add(R.id.main_body,new MyinfoFragment()).commit();
         setMain();
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.main_body, new CourseFragment()).commit();
     }
+    private void setMain() {
+        this.getSupportFragmentManager().beginTransaction().add(R.id.main_body, new CourseFragment()).commit();
+        setSelectStatus(2);
+    }
+
 
     private void initView() {
         main_body = (RelativeLayout) findViewById(R.id.main_body);
@@ -97,10 +107,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-    private void setMain() {
-        this.getSupportFragmentManager().beginTransaction().add(R.id.main_body, new CourseFragment()).commit();
-        setSelectStatus(0);
-    }
+
 
     @Override
     public void onClick(View v) {

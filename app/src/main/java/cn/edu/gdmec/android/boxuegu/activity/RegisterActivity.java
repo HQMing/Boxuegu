@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import cn.edu.gdmec.android.boxuegu.R;
 import cn.edu.gdmec.android.boxuegu.utils.MD5Utils;
 
@@ -22,13 +23,14 @@ public class RegisterActivity extends AppCompatActivity {
     // 返回按钮
     private TextView tv_back;
     // 注册按钮
-    private Button btn_rsgister;
+    private Button btn_register;
     // 账号、密码、再次输入的密码控件
     private EditText et_user_name,et_psw,et_psw_again;
     // 账号、密码、再次输入的密码的控件的获取指
     private String userName,psw,pswAgain;
     // 标题布局
     private RelativeLayout rl_title_bar;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
         rl_title_bar=(RelativeLayout)findViewById(R.id.title_bar);
         rl_title_bar.setBackgroundColor(Color.TRANSPARENT);
 
-        btn_rsgister=(Button) findViewById(R.id.btn_register);
+        btn_register=(Button) findViewById(R.id.btn_register);
         et_user_name=(EditText) findViewById(R.id.et_user_name);
-        et_psw=(EditText) findViewById(R.id.et_psw);
+        et_psw = (EditText) findViewById(R.id.et_pwd);
         et_psw_again=(EditText) findViewById(R.id.et_psw_again);
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,30 +57,33 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterActivity.this.finish();
             }
         });
-        btn_rsgister.setOnClickListener(new View.OnClickListener() {
+        btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                //获取输入在响应控件中的字符串
                 getEditString();
-                if(TextUtils.isEmpty(userName)){
+                if (TextUtils.isEmpty(userName)){
                     Toast.makeText(RegisterActivity.this,"请输入用户名",Toast.LENGTH_SHORT).show();
                     return;
                 }else if (TextUtils.isEmpty(psw)){
                     Toast.makeText(RegisterActivity.this,"请输入密码",Toast.LENGTH_SHORT).show();
                     return;
                 }else if (TextUtils.isEmpty(pswAgain)){
-                    Toast.makeText(RegisterActivity.this, "请再次输入密码",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"请再次输入密码",Toast.LENGTH_SHORT).show();
                     return;
                 }else if(!psw.equals(pswAgain)){
-                    Toast.makeText(RegisterActivity.this,"输入两次的密码不一致",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"两次的密码不一样",Toast.LENGTH_SHORT).show();
                     return;
                 }else if (isExistUserName(userName)){
-                    Toast.makeText(RegisterActivity.this,"此账户名已经存在",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"此账户已经存在",Toast.LENGTH_SHORT).show();
                     return;
-                }else{
+                }else {
                     Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                    //把用户名和密码保存到sharedpreference连
                     saveRegisterInfo(userName,psw);
-                    Intent data =new Intent();
-                    data.putExtra("username",userName);
+                    //注册成功后把用户名传递到loginActivity.java中
+                    Intent data = new Intent();
+                    data.putExtra("userName",userName);
                     setResult(RESULT_OK,data);
                     RegisterActivity.this.finish();
                 }
@@ -100,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
         return has_userName;
     }
     private void saveRegisterInfo(String userName,String psw){
-        String md5Psw= MD5Utils.md5(psw);
+        String md5Psw = MD5Utils.md5(psw);
         SharedPreferences sp = getSharedPreferences("loginInfo",MODE_PRIVATE);
         SharedPreferences.Editor editor=sp.edit();
         editor.putString(userName,md5Psw);
