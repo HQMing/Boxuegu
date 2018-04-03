@@ -1,23 +1,24 @@
 package cn.edu.gdmec.android.boxuegu.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.edu.gdmec.android.boxuegu.Fragment.CourseFragment;
 import cn.edu.gdmec.android.boxuegu.Fragment.ExercisesFragment;
-import cn.edu.gdmec.android.boxuegu.Fragment.MyinfoFragment;
+import cn.edu.gdmec.android.boxuegu.Fragment.FragmentMyinfoFragment;
 import cn.edu.gdmec.android.boxuegu.R;
+import cn.edu.gdmec.android.boxuegu.utils.AnalysisUtils;
 //修改界面
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
@@ -34,7 +35,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private ImageView bottom_bar_image_myinfo;
     private RelativeLayout bottom_bar_myinfo_btn;
     private LinearLayout main_bottom_bar;
-
+    protected  long exitTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setSelectStatus(2);
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction transaction=manager.beginTransaction();
-        transaction.add(R.id.main_body,new MyinfoFragment()).commit();
+        transaction.add(R.id.main_body,new FragmentMyinfoFragment()).commit();
         setMain();
     }
     private void setMain() {
@@ -108,8 +109,36 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data!=null){
+            boolean isLogin=data.getBooleanExtra("isLogin",false);
+            if (isLogin){
+                setSelectStatus(0);
+            }else{
+                setSelectStatus(2);
+            }
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode==KeyEvent.KEYCODE_BACK && event.getAction()==KeyEvent.ACTION_DOWN){
+            if ((System.currentTimeMillis() - exitTime) > 2000){
+                Toast.makeText(MainActivity.this,"再按一次退出博学谷",Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }else {
+                this.finish();
+                if (AnalysisUtils.readLoginStatus(this)){
+                    AnalysisUtils.clearLoginStatus(this);
+                }
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode,event);
 
-
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -122,7 +151,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 setSelectStatus(1);
                 break;
             case R.id.bottom_bar_myinfo_btn:
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new MyinfoFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new FragmentMyinfoFragment()).commit();
                 setSelectStatus(2);
                 break;
         }
