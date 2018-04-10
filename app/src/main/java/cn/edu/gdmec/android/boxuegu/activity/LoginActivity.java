@@ -16,121 +16,99 @@ import cn.edu.gdmec.android.boxuegu.R;
 import cn.edu.gdmec.android.boxuegu.utils.MD5Utils;
 
 public class LoginActivity extends AppCompatActivity {
-
     private TextView tv_main_title;
-    private TextView tv_back;
-    private TextView tv_register;
-    private TextView tv_find_psw;
+    private TextView tv_back,tv_register,tv_find_psw;
     private Button btn_login;
-    private EditText et_user_name;
-    private EditText et_psw;
-    private String username;
-    private String psw;
-
+    private String userName,psw,spPsw;
+    private EditText et_user_name,et_psw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //设置此界面为竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         init();
     }
-    //获取页面控件
+
     private void init() {
-        tv_main_title = (TextView) findViewById(R.id.tv_main_title);
+        tv_main_title=findViewById(R.id.tv_main_title);
         tv_main_title.setText("登录");
-        tv_back = (TextView) findViewById(R.id.tv_back);
-        tv_register = (TextView) findViewById(R.id.tv_register);
-        tv_find_psw = (TextView) findViewById(R.id.tv_find_psw);
-        btn_login = (Button) findViewById(R.id.btn_login);
-        et_user_name = (EditText) findViewById(R.id.et_user_name);
-        et_psw = (EditText) findViewById(R.id.et_psw);
+        tv_back=findViewById(R.id.tv_back);
+        tv_register=findViewById(R.id.tv_register);
+        tv_find_psw=findViewById(R.id.tv_find_psw);
+        btn_login=findViewById(R.id.btn_login);
+        et_user_name=findViewById(R.id.et_user_name);
+        et_psw=findViewById(R.id.et_psw);
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 LoginActivity.this.finish();
             }
         });
-//        立即注册按钮的点击事件
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivityForResult(intent,1);
             }
         });
-        //        立即找回密码的点击事件
         tv_find_psw.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //跳转到找回密码页面
-                Intent intent = new Intent(LoginActivity.this,ActivityFindPswActivity.class);
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,ActivityFindPswActivity.class);
                 startActivity(intent);
             }
         });
-        //登录按钮点击事件
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                username = et_user_name.getText().toString().trim();
-                psw = et_psw.getText().toString().trim();
-                String md5Psw = null;
-                md5Psw = MD5Utils.md5(psw);
-                String spPsw = readPsw(username);
-                if (TextUtils.isEmpty(username)) {
-                    Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                userName=et_user_name.getText().toString().trim();
+                psw=et_psw.getText().toString().trim();
+                String md5Psw= MD5Utils.md5(psw);
+                spPsw=readPsw(userName);
+                if (TextUtils.isEmpty(userName)){
+                    Toast.makeText(LoginActivity.this,"请输入用户名",Toast.LENGTH_LONG).show();
                     return;
-                } else if (TextUtils.isEmpty(psw)) {
-                    Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+                }else if (TextUtils.isEmpty(psw)){
+                    Toast.makeText(LoginActivity.this,"请输入密码",Toast.LENGTH_LONG).show();
                     return;
-                } else if (md5Psw.equals(spPsw)) {
-                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    //保存登录状态和登录用户名
-                    saveLoginStatus(true, username);
-                    Intent data = new Intent();
+                }else if (md5Psw.equals(spPsw)){
+                    Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_LONG).show();
+                    saveLoginStatus(true,userName);
+                    Intent data=new Intent();
                     data.putExtra("isLogin",true);
-                    data.putExtra("userName",username);
                     setResult(RESULT_OK,data);
                     LoginActivity.this.finish();
-                    //跳到主页
                     return;
-                   /* Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                    startActivityForResult(intent,1);*/
-                } else if (!TextUtils.isEmpty(psw) && !md5Psw.equals(spPsw)) {
-                    Toast.makeText(LoginActivity.this, "用户名和密码不一致", Toast.LENGTH_SHORT).show();
+                }else if (!TextUtils.isEmpty(spPsw)&&!md5Psw.equals(spPsw)){
+                    Toast.makeText(LoginActivity.this,"输入的用户名和密码不一致",Toast.LENGTH_LONG).show();
                     return;
-                }else{
-                    Toast.makeText(LoginActivity.this, "此用户不存在", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(LoginActivity.this,"此用户名不存在",Toast.LENGTH_LONG).show();
                 }
             }
         });
-
     }
 
-    private void saveLoginStatus(boolean status, String username) {
-        //loginInfo表示文件名
-        SharedPreferences sp = getSharedPreferences("loginInfo",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();//获取编辑器
-        editor.putBoolean("isLogin",status);//存入boolean类型的登录状态
-        editor.putString("loginUserName",username);//存入登录时的用户名
-        editor.commit();//提交修改
-
+    private void saveLoginStatus(boolean status, String userName) {
+        SharedPreferences sp=getSharedPreferences("loginInfo",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putBoolean("isLogin",status);
+        editor.putString("loginUserName",userName);
+        editor.commit();
     }
 
-    private String readPsw(String username) {
-        SharedPreferences sp = getSharedPreferences("loginInfo",MODE_PRIVATE);
-        return sp.getString(username,"");
+    private String readPsw(String userName){
+        SharedPreferences sp=getSharedPreferences("loginInfo",MODE_PRIVATE);
+        return sp.getString(userName,"");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null){
-            //从注册界面传递过来的用户名
-            String userName = data.getStringExtra("userName");
+        if (data!=null){
+            String userName=data.getStringExtra("userName");
             if (!TextUtils.isEmpty(userName)){
                 et_user_name.setText(userName);
-                //设置光标位置
                 et_user_name.setSelection(userName.length());
             }
         }

@@ -79,6 +79,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case 0:
                 bottom_bar_image_course.setImageResource(R.drawable.main_course_icon_selected);
                 bottom_bar_text_course.setTextColor(Color.parseColor("#0097F7"));
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new CourseFragment()).commit();
 
                 bottom_bar_text_exercises.setTextColor(Color.parseColor("#666666"));
                 bottom_bar_text_myinfo.setTextColor(Color.parseColor("#666666"));
@@ -89,6 +90,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case 1:
                 bottom_bar_image_exercises.setImageResource(R.drawable.main_exercises_icon_selected);
                 bottom_bar_text_exercises.setTextColor(Color.parseColor("#0097F7"));
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new ExercisesFragment()).commit();
 
                 bottom_bar_text_course.setTextColor(Color.parseColor("#666666"));
                 bottom_bar_text_myinfo.setTextColor(Color.parseColor("#666666"));
@@ -99,6 +101,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case 2:
                 bottom_bar_image_myinfo.setImageResource(R.drawable.main_my_icon_selected);
                 bottom_bar_text_myinfo.setTextColor(Color.parseColor("#0097F7"));
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new FragmentMyinfoFragment()).commit();
 
                 bottom_bar_text_course.setTextColor(Color.parseColor("#666666"));
                 bottom_bar_text_exercises.setTextColor(Color.parseColor("#666666"));
@@ -113,9 +116,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            boolean isLogin=data.getBooleanExtra("isLogin",false);
+            boolean isLogin=data.getBooleanExtra("isLogin",true);
             if (isLogin){
-                setSelectStatus(0);
+                setSelectStatus(2);
             }else{
                 setSelectStatus(2);
             }

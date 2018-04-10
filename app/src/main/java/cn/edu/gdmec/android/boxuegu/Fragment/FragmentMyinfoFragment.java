@@ -62,6 +62,8 @@ public class FragmentMyinfoFragment extends Fragment implements View.OnClickList
             case R.id.ll_head:
                 if (AnalysisUtils.readLoginStatus(getActivity())) {
                     //跳转到个人资料界面
+                    //Intent intent = new Intent(getActivity(),ActivityUserInfoActivity.class);
+                   // getActivity().startActivity(intent);
                 } else {
                     //跳转到登陆界面
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
