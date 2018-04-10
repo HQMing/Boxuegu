@@ -112,6 +112,24 @@ public class ActivityChangeUserInfoActivity extends Activity implements View.OnC
                             Selection.setSelection(editable, selEndIndex);
                         }
                         break;
+                    case 3:
+                       if (len > 12) {
+                        int selEndIndex = Selection.getSelectionEnd(editable);
+                        String str = editable.toString();
+
+                        String newStr = str.substring(0, 12);
+                        et_content.setText(newStr);
+                        editable = et_content.getText();
+
+                        int newLen = editable.length();
+
+                        if (selEndIndex > newLen) {
+                            selEndIndex = editable.length();
+                        }
+                        Selection.setSelection(editable, selEndIndex);
+                    }
+
+                    break;
                     default:
                         break;
                 }

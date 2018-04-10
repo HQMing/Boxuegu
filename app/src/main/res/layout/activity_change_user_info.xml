@@ -25,7 +25,7 @@
             android:singleLine="true"
             android:textColor="#737373"
             android:textSize="14sp"
-            android:maxLength="12"
+
             android:numeric="integer"/>
 
         <ImageView

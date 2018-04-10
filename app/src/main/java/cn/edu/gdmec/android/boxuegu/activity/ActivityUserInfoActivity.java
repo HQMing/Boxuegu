@@ -91,6 +91,7 @@ public class ActivityUserInfoActivity extends Activity implements View.OnClickLi
             bean.nickName = "问答精灵";
             bean.sex = "男";
             bean.signature = "问答精灵";
+            bean.QQ="未添加";
             DBUtils.getInstance(this).saveUserInfo(bean);
         }
         satValue(bean);
