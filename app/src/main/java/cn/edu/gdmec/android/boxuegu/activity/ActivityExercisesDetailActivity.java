@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,7 +63,49 @@ public class ActivityExercisesDetailActivity extends Activity  {
                 ActivityExercisesDetailActivity.this.finish();
             }
         });
+        adapter = new ExercisesDetailListItemAdapter(ActivityExercisesDetailActivity.this, new ExercisesDetailListItemAdapter.OnSelectListener() {
+            @Override
+            public void onSelectA(int position, ImageView iv_a, ImageView iv_b, ImageView iv_c, ImageView iv_d) {
+                if(eb1.get(position).answer != 1){
+                    eb1.get(position).select = 1;
+                }else{
+                    eb1.get(position).select = 0;
+                }
+                switch (eb1.get(position).answer) {
+                    case 1:
+                        iv_a.setImageResource(R.drawable.exercises_right_icon);
+                        break;
+                    case 2:
+                        iv_b.setImageResource(R.drawable.exercises_right_icon);
+                        iv_a.setImageResource(R.drawable.exercises_error_icon);
+                        break;
+                    case 3:
+                        iv_c.setImageResource(R.drawable.exercises_right_icon);
+                        iv_a.setImageResource(R.drawable.exercises_error_icon);
+                        break;
+                    case 4:
+                        iv_a.setImageResource(R.drawable.exercises_error_icon);
+                        iv_d.setImageResource(R.drawable.exercises_right_icon);
+                        break;
+                }
+                AnalysisUtils.setABCDEnable(false,iv_a,iv_b,iv_c,iv_d);
+            }
 
+            @Override
+            public void onSelectB(int position, ImageView iv_a, ImageView iv_b, ImageView iv_c, ImageView iv_d) {
+
+            }
+
+            @Override
+            public void onSelectC(int position, ImageView iv_a, ImageView iv_b, ImageView iv_c, ImageView iv_d) {
+
+            }
+
+            @Override
+            public void onSelectD(int position, ImageView iv_a, ImageView iv_b, ImageView iv_c, ImageView iv_d) {
+
+            }
+        });
     }
 
 }
