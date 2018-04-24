@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -44,8 +45,9 @@ public class ActivityExercisesDetailActivity extends Activity  {
     }
     private  void initData(){
         try {
-            InputStream is = getResources().getAssets().open("chaper" + id + ".xml");
+            InputStream is = getResources().getAssets().open("chapter" + id + ".xml");
             eb1 = AnalysisUtils.getExercisesInfos(is);
+            Log.i("ebl",eb1.size()+"");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -173,6 +175,7 @@ public class ActivityExercisesDetailActivity extends Activity  {
                 AnalysisUtils.setABCDEnable(false,iv_a,iv_b,iv_c,iv_d);
             }
         });
+
         adapter.setData(eb1);
         rv_list = (RecyclerView) findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
