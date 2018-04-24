@@ -116,12 +116,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            boolean isLogin=data.getBooleanExtra("isLogin",true);
+            boolean isLogin=data.getBooleanExtra("isLogin",false);
             if (isLogin){
                 setSelectStatus(2);
             }else{
                 setSelectStatus(2);
             }
+        }
+        if(requestCode==000){
+            setSelectStatus(1);
         }
     }
     @Override

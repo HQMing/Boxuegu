@@ -31,7 +31,7 @@ public class ExercisesFragment extends Fragment  {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initData();
-        lvList = view.findViewById(R.id.lv_list);
+        lvList = (ListView)view.findViewById(R.id.lv_list);
         adapter = new ExercisesListItemAdapter(getActivity());
         adapter.setData(eb1);
         lvList.setAdapter(adapter);
@@ -94,6 +94,7 @@ public class ExercisesFragment extends Fragment  {
                     bean.background=(R.drawable.exercises_bg_2);
                     break;
             }
+            eb1.add(bean);
         }
     }
 
