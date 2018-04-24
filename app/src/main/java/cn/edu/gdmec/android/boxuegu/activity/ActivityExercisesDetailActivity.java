@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,7 +32,6 @@ public class ActivityExercisesDetailActivity extends Activity  {
     private ExercisesDetailListItemAdapter adapter;
     private TextView tv_dibu;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +47,6 @@ public class ActivityExercisesDetailActivity extends Activity  {
         try {
             InputStream is = getResources().getAssets().open("chapter" + id + ".xml");
             eb1 = AnalysisUtils.getExercisesInfos(is);
-            Log.i("ebl",eb1.size()+"");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -58,8 +55,7 @@ public class ActivityExercisesDetailActivity extends Activity  {
     }
 
     private int count=0;
-
-    private void initView() {
+    private void initView(){
         tv_back = (TextView) findViewById(R.id.tv_back);
         tv_main_title = (TextView) findViewById(R.id.tv_main_title);
         title_bar = (RelativeLayout) findViewById(R.id.title_bar);
@@ -67,14 +63,11 @@ public class ActivityExercisesDetailActivity extends Activity  {
         tv_main_title.setText(title);
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 ActivityExercisesDetailActivity.this.finish();
-
             }
         });
         adapter = new ExercisesDetailListItemAdapter(ActivityExercisesDetailActivity.this, new ExercisesDetailListItemAdapter.OnSelectListener() {
-
-
             @Override
             public void onSelectA(int position, ImageView iv_a, ImageView iv_b, ImageView iv_c, ImageView iv_d) {
                 if(eb1.get(position).answer != 1){
@@ -183,6 +176,7 @@ public class ActivityExercisesDetailActivity extends Activity  {
                 AnalysisUtils.setABCDEnable(false,iv_a,iv_b,iv_c,iv_d);
             }
         });
+
         tv_dibu = (TextView) findViewById(R.id.tv_dibu);
         adapter.setOnItemListener(new ExercisesDetailListItemAdapter.OnItemListener() {
             @Override
@@ -195,12 +189,9 @@ public class ActivityExercisesDetailActivity extends Activity  {
                 }
             }
         });
-
-
         adapter.setData(eb1);
         rv_list = (RecyclerView) findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
-        rv_list.setHorizontalScrollBarEnabled(true);
         rv_list.setAdapter(adapter);
     }
 
