@@ -48,7 +48,7 @@ public class AnalysisUtils {
             switch (type){
                 case XmlPullParser.START_TAG:
                     if ("infos".equals(parser.getName())){
-                        exercisesInfos=new ArrayList<>();
+                        exercisesInfos=new ArrayList<ExercisesBean>();
                     }else if ("exercises".equals(parser.getName())){
                         exercisesInfo=new ExercisesBean();
                         String ids=parser.getAttributeValue(0);

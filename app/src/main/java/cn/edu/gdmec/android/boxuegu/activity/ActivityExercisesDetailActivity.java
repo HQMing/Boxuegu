@@ -37,7 +37,7 @@ public class ActivityExercisesDetailActivity extends Activity  {
         setContentView(R.layout.activity_exercises_detail);
         id = getIntent().getIntExtra("id",0);
         title = getIntent().getStringExtra("title");
-        eb1 = new ArrayList<>();
+        eb1 = new ArrayList<ExercisesBean>();
         initData();
         initView();
 
