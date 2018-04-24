@@ -31,6 +31,8 @@ public class ActivityExercisesDetailActivity extends Activity  {
     private String title;
     private List<ExercisesBean> eb1;
     private ExercisesDetailListItemAdapter adapter;
+    private TextView tv_dibu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,10 @@ public class ActivityExercisesDetailActivity extends Activity  {
             e.printStackTrace();
         }
     }
-    private void initView(){
+
+    private int count=0;
+
+    private void initView() {
         tv_back = (TextView) findViewById(R.id.tv_back);
         tv_main_title = (TextView) findViewById(R.id.tv_main_title);
         title_bar = (RelativeLayout) findViewById(R.id.title_bar);
@@ -62,11 +67,14 @@ public class ActivityExercisesDetailActivity extends Activity  {
         tv_main_title.setText(title);
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 ActivityExercisesDetailActivity.this.finish();
+
             }
         });
         adapter = new ExercisesDetailListItemAdapter(ActivityExercisesDetailActivity.this, new ExercisesDetailListItemAdapter.OnSelectListener() {
+
+
             @Override
             public void onSelectA(int position, ImageView iv_a, ImageView iv_b, ImageView iv_c, ImageView iv_d) {
                 if(eb1.get(position).answer != 1){
@@ -175,10 +183,24 @@ public class ActivityExercisesDetailActivity extends Activity  {
                 AnalysisUtils.setABCDEnable(false,iv_a,iv_b,iv_c,iv_d);
             }
         });
+        tv_dibu = (TextView) findViewById(R.id.tv_dibu);
+        adapter.setOnItemListener(new ExercisesDetailListItemAdapter.OnItemListener() {
+            @Override
+            public void onItem(View view, int position) {
+                count++;
+                tv_dibu.setText("第"+(position+1)+"题完成，共"+adapter.getItemCount()+"题");
+                if (count==5){
+                    AnalysisUtils.saveExercises(ActivityExercisesDetailActivity.this,id);
+                    setResult(RESULT_OK);
+                }
+            }
+        });
+
 
         adapter.setData(eb1);
         rv_list = (RecyclerView) findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
+        rv_list.setHorizontalScrollBarEnabled(true);
         rv_list.setAdapter(adapter);
     }
 

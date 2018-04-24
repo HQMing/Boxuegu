@@ -66,13 +66,22 @@ public class ExercisesListItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void initializeViews(ExercisesBean object, ViewHolder holder, int position, View convertView) {
+    private void initializeViews(ExercisesBean object, ViewHolder holder,
+                                 int position, View convertView) {
         //TODO implement
         final ExercisesBean bean = getItem(position);
-        if(bean != null){
-            holder.tvOrder.setText(position+1+"");
+        if (bean != null) {
+            holder.tvOrder.setText(position + 1 + "");
             holder.tvTitle.setText(bean.title);
-            //Log.i("readExercises", AnalysisUtils.readExercises(context,))
+            Log.i("readExercises",AnalysisUtils.readExercises(context,position+1)+"");
+            if (AnalysisUtils.readExercises(context,position+1)){
+                holder.tvContent.setText("已完成");
+            }else{
+                holder.tvContent.setText(bean.content);
+            }
+
+
+
             holder.tvOrder.setBackgroundResource(bean.background);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
