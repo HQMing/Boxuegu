@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.gdmec.android.boxuegu.Bean.CourseBean;
 import cn.edu.gdmec.android.boxuegu.Bean.ExercisesBean;
 
 /**
@@ -18,7 +19,6 @@ import cn.edu.gdmec.android.boxuegu.Bean.ExercisesBean;
  */
 
 public class AnalysisUtils {
-    //读取用户名
     public static String readLoginUserName(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences("loginInfo",Context.MODE_PRIVATE);
         String userName=sharedPreferences.getString("loginUserName","");
@@ -50,13 +50,14 @@ public class AnalysisUtils {
         editor.commit();
 
     }
+
     public static List<ExercisesBean> getExercisesInfos(InputStream is) throws Exception{
-        XmlPullParser parser = Xml.newPullParser();
-        parser.setInput(is, "utf-8");
+        XmlPullParser parser= Xml.newPullParser();
+        parser.setInput(is,"utf-8");
         List<ExercisesBean> exercisesInfos=null;
         ExercisesBean exercisesInfo=null;
         int type=parser.getEventType();
-        while (type != XmlPullParser.END_DOCUMENT){
+        while (type!=XmlPullParser.END_DOCUMENT){
             switch (type){
                 case XmlPullParser.START_TAG:
                     if ("infos".equals(parser.getName())){
@@ -65,10 +66,10 @@ public class AnalysisUtils {
                         exercisesInfo=new ExercisesBean();
                         String ids=parser.getAttributeValue(0);
                         exercisesInfo.subjectId=Integer.parseInt(ids);
-                    }else if("subject".equals(parser.getName())){
+                    }else if ("subject".equals(parser.getName())){
                         String subject=parser.nextText();
                         exercisesInfo.subject=subject;
-                    }else if ("a".equals(parser.getName())){
+                    } else if ("a".equals(parser.getName())){
                         String a=parser.nextText();
                         exercisesInfo.a=a;
                     }else if ("b".equals(parser.getName())){
@@ -86,7 +87,7 @@ public class AnalysisUtils {
                     }
                     break;
                 case XmlPullParser.END_TAG:
-                    if("exercises".equals(parser.getName())){
+                    if ("exercises".equals(parser.getName())){
                         exercisesInfos.add(exercisesInfo);
                         exercisesInfo=null;
                     }
@@ -101,5 +102,42 @@ public class AnalysisUtils {
         iv_b.setEnabled(value);
         iv_c.setEnabled(value);
         iv_d.setEnabled(value);
+    }
+    public static List<CourseBean> getCourseInfos(InputStream is) throws Exception{
+        XmlPullParser parser=Xml.newPullParser();
+        parser.setInput(is,"utf-8");
+        List<CourseBean> courseList=null;
+        CourseBean courseInfo=null;
+        int type=parser.getEventType();
+        while (type!=XmlPullParser.END_DOCUMENT){
+            switch (type){
+                case XmlPullParser.START_TAG:
+                    if ("infos".equals(parser.getName())) {
+                        courseList=new ArrayList<CourseBean>();
+                    }else if ("course".equals(parser.getName())){
+                        courseInfo=new CourseBean();
+                        String ids=parser.getAttributeValue(0);
+                        courseInfo.id=Integer.parseInt(ids);
+                    }else if ("imgtitle".equals(parser.getName())){
+                        String imgtitle=parser.nextText();
+                        courseInfo.imgTitle=imgtitle;
+                    }else if ("title".equals(parser.getName())){
+                        String title=parser.nextText();
+                        courseInfo.title=title;
+                    }else if ("intro".equals(parser.getName())){
+                        String intro=parser.nextText();
+                        courseInfo.intro=intro;
+                    }
+                    break;
+                case XmlPullParser.END_TAG:
+                    if ("course".equals(parser.getName())){
+                        courseList.add(courseInfo);
+                        courseInfo=null;
+                    }
+                    break;
+            }
+            type=parser.next();
+        }
+        return courseList;
     }
 }
