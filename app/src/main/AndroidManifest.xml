@@ -25,6 +25,9 @@
         <activity android:name=".activity.ActivityUserInfoActivity"/>
         <activity android:name=".activity.ActivityChangeUserInfoActivity"/>
         <activity android:name=".activity.ActivityExercisesDetailActivity"/>
+        <activity android:name=".activity.ActivityVideoListActivity"/>
+        <activity android:name=".activity.ActivityVideoPlayActivity"/>
+        <activity android:name=".activity.ActivityPlayHistoryActivity"/>
     </application>
 
 </manifest>
