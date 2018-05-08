@@ -77,7 +77,7 @@ public class DBUtils {
         cv.put("userName",userName);
         cv.put("chapterId",videoBean.chapterId);
         cv.put("videoId",videoBean.videoId);
-        cv.put("vedioPath",videoBean.videoPath);
+        cv.put("videoPath",videoBean.videoPath);
         cv.put("title",videoBean.title);
         cv.put("secondTitle",videoBean.secondTitle);
         db.insert(SQLiteHelper.U_VIDEO_PLAY_LIST,null,cv);

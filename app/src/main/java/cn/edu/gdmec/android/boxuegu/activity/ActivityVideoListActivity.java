@@ -22,8 +22,7 @@ import java.util.List;
 import cn.edu.gdmec.android.boxuegu.Adapter.VideoListItemAdapter;
 import cn.edu.gdmec.android.boxuegu.Bean.VideoBean;
 import cn.edu.gdmec.android.boxuegu.R;
-//import cn.edu.gdmec.android.boxuegu.adapter.VideoListItemAdapter;
-//import cn.edu.gdmec.android.boxuegu.bean.VideoBean;
+
 
 public class ActivityVideoListActivity extends Activity  {
 
@@ -121,17 +120,26 @@ public class ActivityVideoListActivity extends Activity  {
             jsonArray = new JSONArray(read(is));
             videoList=new ArrayList<VideoBean>();
             for (int i=0;i<jsonArray.length();i++){
-                VideoBean bean=new VideoBean();
-                JSONObject jsonObj = jsonArray.getJSONObject(i);
-                if (jsonObj.getInt("chapterId")==chapterId){
-                    bean.chapterId=jsonObj.getInt("chapterId");
-                    bean.videoId=Integer.parseInt(jsonObj.getString("videoId"));
-                    bean.title=jsonObj.getString("title");
-                    bean.secondTitle=jsonObj.getString("secondTitle");
-                    bean.videoPath=jsonObj.getString("videoPath");
-                    videoList.add(bean);
+
+                JSONObject job = jsonArray.getJSONObject(i);
+
+                if (job.getInt("chapterId")==chapterId){
+                    JSONArray jay =job.getJSONArray("data");
+                    for (int j=0;j<jay.length();j++) {
+                        VideoBean bean =new VideoBean();
+                        JSONObject jsonObj = jay.getJSONObject(j);
+                            bean.chapterId = job.getInt("chapterId");
+                            bean.videoId = Integer.parseInt(jsonObj.getString("videoId"));
+                            bean.title = jsonObj.getString("title");
+                            bean.secondTitle = jsonObj.getString("secondTitle");
+                            bean.videoPath = jsonObj.getString("videoPath");
+
+                            videoList.add(bean);
+                        bean=null;
+                    }
+
                 }
-                bean=null;
+
             }
         } catch (Exception e) {
             e.printStackTrace();

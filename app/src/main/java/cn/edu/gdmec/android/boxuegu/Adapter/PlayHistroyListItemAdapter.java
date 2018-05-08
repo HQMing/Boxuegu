@@ -112,8 +112,8 @@ public class PlayHistroyListItemAdapter extends BaseAdapter {
 
     protected class ViewHolder {
         private ImageView ivVideoIcon;
-    private TextView tvAdapterTitle;
-    private TextView tvVideoTitle;
+        private TextView tvAdapterTitle;
+        private TextView tvVideoTitle;
 
         public ViewHolder(View view) {
             ivVideoIcon = (ImageView) view.findViewById(R.id.iv_video_icon);

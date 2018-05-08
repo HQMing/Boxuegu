@@ -3,6 +3,7 @@ package cn.edu.gdmec.android.boxuegu.activity;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -52,6 +53,7 @@ public class ActivityPlayHistoryActivity extends Activity {
             tv_none.setVisibility(View.VISIBLE);
         }
         adapter=new PlayHistroyListItemAdapter(this);
+
         adapter.setData(vbl);
         lv_list.setAdapter(adapter);
         tv_back.setOnClickListener(new View.OnClickListener() {
